@@ -1,0 +1,13 @@
+species.klifs,kinase.klifs_name,kinase.klifs_id,kinase.group,structure.dfg,structure.ac_helix,count
+Human,PIM1,160,CAMK,in,in,129
+Human,AurA,259,Other,in,in,95
+Human,JAK2,436,TK,in,in,61
+Human,BTK,473,TK,in,out,56
+Mouse,PKACa,905,AGC,in,in,54
+Human,IRAK4,489,TKL,in,in,45
+Human,MAP2K1,383,STE,in,out,42
+Human,MST3,380,STE,in,in,29
+Human,AurA,259,Other,out-like,in,24
+Human,TRKA,480,TK,out,in,22
+Human,BRAF,509,TKL,in,out,21
+Human,BRAF,509,TKL,out,in,11
