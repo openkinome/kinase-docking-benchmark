@@ -1,0 +1,62 @@
+name: test
+channels:
+  - pytorch
+  - pyg
+  - conda-forge
+  - openeye
+dependencies:
+  # base depends
+  - python
+  - pip
+  - pandas
+  - requests
+  - pint
+  - appdirs
+  - tqdm
+  - openff-toolkit >=0.9
+  - xgboost
+  - openeye-toolkits >=2020.2.0
+  - biotite
+  - bravado
+  - biopandas
+  - awkward
+  - pyarrow
+  - mdanalysis >=2.0.0
+  - opencadd
+  - matplotlib-base
+  - ruamel.yaml
+
+  # distributed computing
+  - dask
+  - dask-jobqueue
+
+  # reproducible workflows
+  - papermill 2.2.*
+  - watermark
+
+  # pytorch
+  - pytorch >=1.8.0
+  - pyg
+  - pytorch-lightning
+
+  # development
+  - jupyterlab
+  - nglview
+
+  # testing
+  - pytest
+  - pytest-cov
+  - codecov
+  
+  # docking analysis
+  - rdkit
+  - spyrmsd
+  - kissim
+
+  - pip:
+      # PyTorch trees
+      - https://github.com/ValentinFigue/Sklearn_PyTorch/archive/1b56a43e41de331ecdf73d08418f75bb34c9fa06.tar.gz
+      
+      # KinoML
+      - https://github.com/openkinome/kinoml/archive/e2bead16cb8e03c89ec7af0f5e0167b81adbe03e.tar.gz
+
