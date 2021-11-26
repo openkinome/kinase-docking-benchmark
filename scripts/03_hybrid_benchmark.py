@@ -1,7 +1,5 @@
 from pathlib import Path
 
-from dask_jobqueue import LSFCluster
-from dask.distributed import Client
 import pandas as pd
 
 from kinoml.core.components import BaseProtein
@@ -14,6 +12,9 @@ if __name__ == '__main__':
 
     print("Reading benchmark dataframe ...")
     structures = pd.read_csv("../data/docking_benchmark_dataset.csv")
+
+    print("Getting list of files ...")
+    path_list = [path.stem for path in Path("../data/hybrid").glob("*.sdf")]
 
     print("Generating systems ...")
     systems = []
@@ -38,6 +39,11 @@ if __name__ == '__main__':
             for _, protein_details in kinase_conformation_group.iterrows():
                 # do not re-dock ligand into derived kinase structure
                 if ligand_details["structure.pdb_id"] != protein_details["structure.pdb_id"]:
+                    # check if sdf file already exists
+                    path_list_tmp = [path for path in path_list if path.split("_")[8] == ligand_name]
+                    path_list_tmp = [path for path in path_list_tmp if path.split("_")[5] == protein_details["structure.pdb_id"]]
+                    if len(path_list_tmp) > 0:
+                        continue
                     protein = BaseProtein(
                         name=f"{protein_details['species.klifs']}_{protein_details['kinase.klifs_name']}"
                     )
@@ -49,21 +55,11 @@ if __name__ == '__main__':
 
     print(f"Generated {len(systems)} systems!")
 
-    print("Setting up cluster ...")
-    cluster = LSFCluster(
-        cores=1,
-        memory="16 GB",
-        queue="cpuqueue",
-        walltime="48:00",
-    )
-    cluster.scale(100)
-    client = Client(cluster)
-
     print("Intitializing featurizer ...")
     featurizer = OEHybridDockingFeaturizer(
         cache_dir="../data/.cache",
         output_dir="../data/hybrid",
-        dask_client=client
+        n_processes=67
     )
 
     print("Featurizing systems ...")
