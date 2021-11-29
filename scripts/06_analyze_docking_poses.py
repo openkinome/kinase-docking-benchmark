@@ -151,7 +151,7 @@ if __name__ == "__main__":
 
     # analyze docking poses
     try:  # look for existing results
-        benchmark_results = pd.read_csv(f"../data/{method}_results.csv", index_col=0)
+        benchmark_results = pd.read_csv(f"../data/{args.method}_results.csv", index_col=0)
         benchmark_results = benchmark_results.to_dict("index")
         already_analyzed = set([file[:-2] for file in benchmark_results.keys()])
     except FileNotFoundError:
@@ -286,8 +286,8 @@ if __name__ == "__main__":
             benchmark_results[sdf_file.name + f"_{k}"] = results
         if i % 10 == 0:
             benchmark_results_df = pd.DataFrame.from_dict(benchmark_results, orient="index")
-            benchmark_results_df.to_csv(f"../data/{method}_results.csv")
+            benchmark_results_df.to_csv(f"../data/{args.method}_results.csv")
 
     benchmark_results_df = pd.DataFrame.from_dict(benchmark_results, orient="index")
-    benchmark_results_df.to_csv(f"../data/{method}_results.csv")
+    benchmark_results_df.to_csv(f"../data/{args.method}_results.csv")
     print("Finished!")
