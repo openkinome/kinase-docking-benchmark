@@ -1,10 +1,12 @@
+from pathlib import Path
 from multiprocessing import Pool
 
 from opencadd.databases.klifs import setup_remote
 import pandas as pd
 
 
-CACHE_DIR = "../data/.cache"
+CACHE_DIR = Path("../data/.cache")
+CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def read_klifs_ligand(structure_id: int, directory):
@@ -33,14 +35,14 @@ def read_klifs_ligand(structure_id: int, directory):
     return molecule
 
 
-def count_ligands(pdb_id, chain_id, expo_id):
+def count_ligands(pdb_id, chain_id, expo_id, directory):
     """Count the ligands in the given PDB entry."""
     from openeye import oechem
 
     from kinoml.modeling.OEModeling import read_molecules, select_chain, remove_non_protein
     from kinoml.databases.pdb import download_pdb_structure
 
-    structure_path = download_pdb_structure(pdb_id)
+    structure_path = download_pdb_structure(pdb_id, directory)
     if pdb_id:
         structure = read_molecules(structure_path)[0]
     else:
@@ -139,15 +141,29 @@ if __name__ == "__main__":
     docking_templates = docking_templates.groupby("structure.pdb_id").head(1)
     # remove structues with multiple instances of the same ligand
     multiple_ligands_indices = []
+    erroneous_indices = []
     for index, structure in docking_templates.iterrows():
-        if count_ligands(structure["structure.pdb_id"], structure["structure.chain"],
-                structure["ligand.expo_id"]) > 1:
-            multiple_ligands_indices.append(index)
+        try:
+            if count_ligands(structure["structure.pdb_id"], structure["structure.chain"],
+                    structure["ligand.expo_id"], CACHE_DIR) > 1:
+                multiple_ligands_indices.append(index)
+        except ValueError:
+            print("Error counting ligands:")
+            print(
+                structure["structure.pdb_id"],
+                structure["structure.chain"],
+                structure["ligand.expo_id"]
+            )
+            erroneous_indices.append(index)
     docking_templates = docking_templates[~docking_templates.index.isin(multiple_ligands_indices)]
+    docking_templates = docking_templates[~docking_templates.index.isin(erroneous_indices)]
 
     print("Downloading ligand structures of filtered docking templates ...")
-    for i, docking_template in docking_templates.iterrows():
-        read_klifs_ligand(docking_template["structure.klifs_id"], CACHE_DIR)
+    unavailable_ligand_indices = []
+    for index, docking_template in docking_templates.iterrows():
+        if not read_klifs_ligand(docking_template["structure.klifs_id"], CACHE_DIR):
+            unavailable_ligand_indices.append(index)
+    docking_templates = docking_templates[~docking_templates.index.isin(unavailable_ligand_indices)]
 
     print("Getting docking templates ...")
     with Pool(processes=50) as pool:
