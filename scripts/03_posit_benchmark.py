@@ -40,7 +40,7 @@ if __name__ == '__main__':
                 # do not re-dock ligand into derived kinase structure
                 if ligand_details["structure.pdb_id"] != protein_details["structure.pdb_id"]:
                     # check if sdf file already exists
-                    path_list_tmp = [path for path in path_list if path.split("_")[8] == ligand_name]
+                    path_list_tmp = [path for path in path_list if path.split("_")[9] == ligand_name]
                     path_list_tmp = [path for path in path_list_tmp if path.split("_")[5] == protein_details["structure.pdb_id"]]
                     if len(path_list_tmp) > 0:
                         continue
