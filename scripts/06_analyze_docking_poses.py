@@ -164,7 +164,7 @@ if __name__ == "__main__":
         # load structures and select chain and alternate location
         protein_pdb_id = sdf_file.name.split("_")[5]
         protein_chain_id = sdf_file.name.split("_")[6][5]
-        if args.method == "posit":
+        if "posit" in args.method:
             ligand_pdb_id, ligand_expo_id = sdf_file.name.split("_")[9].split("-")
         else:
             ligand_pdb_id, ligand_expo_id = sdf_file.name.split("_")[8].split("-")
