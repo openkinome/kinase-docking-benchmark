@@ -249,10 +249,6 @@ if __name__ == "__main__":
             print(f"Could not calculate fingerprint similarity for {sdf_file.name}.")
             fingerprint_similarity = None
         shape_similarity = get_shape_similarity(ligand_template_molecule, ligand_smiles)
-        # molecular identitiy
-        different_molecule = False  # e.g. in case of missinterpretation or covalent molecules
-        if not are_identical_molecules(ligand_structure, docking_pose):
-            different_molecule = True
         # get potential poses
         pose_files = list(directory.glob(sdf_file.stem[:-6] + "pose*"))
         if len(pose_files) == 0:  # i.e. posit run, since it only gives a single pose
