@@ -277,7 +277,6 @@ if __name__ == "__main__":
                 "rmsd": rmsd,
                 "docking_score": docking_score,
                 "posit_probability": posit_probability,
-                "different_molecule": different_molecule,
                 "fingerprint_similarity": fingerprint_similarity,
                 "shape_similarity": shape_similarity,
             }
