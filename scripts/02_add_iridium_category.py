@@ -11,28 +11,56 @@ import pandas as pd
 
 def get_iridium_category(pdb_id, chain_id, expo_id):
     """Get the iridum category of the given structure."""
-    from kinoml.modeling.OEModeling import read_molecules, read_electron_density, prepare_complex
+    from openeye import oespruce
+
+    from kinoml.modeling.OEModeling import read_molecules, read_electron_density
     from kinoml.databases.pdb import download_pdb_structure
     from kinoml.utils import LocalFileStorage, FileDownloader
 
+    def _contains_ligand(design_unit, resname, chain_id):
+        """
+        Returns True if the design unit contains a ligand with given residue name and chain ID.
+        """
+        ligand = oechem.OEGraphMol()
+        design_unit.GetLigand(ligand)
+        hier_view = oechem.OEHierView(ligand)
+        for hier_residue in hier_view.GetResidues():
+            if hier_residue.GetResidueName() == resname:
+                if hier_residue.GetOEResidue().GetChainID() == chain_id:
+                    return True
+        return False
+
+    # download structure
     structure_path = download_pdb_structure(pdb_id)
     if pdb_id:
         structure = read_molecules(structure_path)[0]
     else:
         raise ValueError(f"Could not download PDB entry {pdb_id}!")
 
+    # download electron density
     electron_density_path = LocalFileStorage.rcsb_electron_density_mtz(pdb_id)
     if not electron_density_path.is_file():
         if not FileDownloader.rcsb_electron_density_mtz(pdb_id):
             return "NA"
     electron_density = read_electron_density(electron_density_path)
 
-    design_unit = prepare_complex(
-        structure, electron_density=electron_density, chain_id=chain_id, ligand_name=expo_id
-    )
+    # make design units
+    design_units = list(oespruce.OEMakeDesignUnits(structure, electron_density))
+
+    # filter design unit for ligand and chain ID
+    design_units = [
+        design_unit for design_unit in design_units
+        if _contains_ligand(design_unit, expo_id, chain_id)
+    ]
+    if len(design_units) == 0:
+        # may happen if oespruce does not categorize ligand of interest as ligand, e.g. 3sls
+        return "NA"
+
+    design_unit = design_units[0]
     iridium_data = design_unit.GetStructureQuality().GetIridiumData()
 
     return oechem.OEGetIridiumCategoryName(iridium_data.GetCategory())
+
 
 path_log = Path("../data/iridium_categories.log")
 if path_log.is_file():
@@ -48,9 +76,11 @@ for i, (index, structure) in enumerate(docking_benchmark_dataset.iterrows()):
         structure["structure.chain"],
         structure["ligand.expo_id"]
     )
-    iridium_categories.append(get_iridium_category(
+    iridium_category = get_iridium_category(
         structure["structure.pdb_id"], structure["structure.chain"], structure["ligand.expo_id"]
-    ))
+    )
+    print(iridium_category)
+    iridium_categories.append(iridium_category)
 
 docking_benchmark_dataset.loc[:, "iridium_category"] = iridium_categories
 
