@@ -91,5 +91,5 @@ with open(path_log, "w") as log_file:
     log_file.write(f"\nNT: {len([x for x in iridium_categories if x == 'NT'])}")
     log_file.write(f"\nNA: {len([x for x in iridium_categories if x == 'NA'])}")
 
-docking_benchmark_dataset.to_csv("../data/docking_benchmark_dataset_edit.csv")
+docking_benchmark_dataset.to_csv("../data/docking_benchmark_dataset.csv")
 print("Finished!")
