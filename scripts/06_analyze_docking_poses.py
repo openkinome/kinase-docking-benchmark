@@ -250,7 +250,7 @@ if __name__ == "__main__":
             fingerprint_similarity = None
         shape_similarity = get_shape_similarity(ligand_template_molecule, ligand_smiles)
         # get potential poses
-        pose_files = list(directory.glob(sdf_file.stem[:-6] + "pose*"))
+        pose_files = sorted(list(directory.glob(sdf_file.stem[:-6] + "pose*")))
         if len(pose_files) == 0:  # i.e. posit run, since it only gives a single pose
             pose_files = [sdf_file]
         for k, pose_file in enumerate(pose_files, start=1):
