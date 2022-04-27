@@ -1,0 +1,87 @@
+Loading benchmark dataset groups ...
+
+	species	name	klifs	group	dfg	ac	count
+0	Human	PIM1	160	CAMK	in	in	129
+1	Human	AurA	259	Other	in	in	95
+2	Human	JAK2	436	TK	in	in	61
+3	Human	BTK	473	TK	in	out	56
+4	Mouse	PKACa	905	AGC	in	in	54
+5	Human	IRAK4	489	TKL	in	in	45
+6	Human	MAP2K1	383	STE	in	out	42
+7	Human	MST3	380	STE	in	in	29
+8	Human	AurA	259	Other	out-like	in	24
+9	Human	TRKA	480	TK	out	in	22
+10	Human	BRAF	509	TKL	in	out	21
+11	Human	BRAF	509	TKL	out	in	11
+
+
+Getting all available structures ...
+Number of kinases: 340
+Number of structures: 12572
+Number of unique ligands: 3611
+
+Applying group selection to all available structures ...
+Number of kinases: 10
+Number of structures: 1567
+Number of ligands: 556
+
+Filtering for single orthosteric ligand ...
+Number of kinases: 10
+Number of structures: 1447
+Number of unique ligands: 553
+
+Filtering for highest quality chain per PDB entry ...
+Number of kinases: 10
+Number of structures: 745
+Number of unique ligands: 553
+
+Removing structures with ligands not handled by OESpruce ...
+1bkx
+Number of kinases: 10
+Number of structures: 744
+Number of unique ligands: 552
+
+Removing structures without mutations or missing residues in the KLIFS binding pocket ...
+Number of kinases: 6
+Number of structures: 44
+Number of unique ligands: 39
+
+Removing structures with SMILES not interpretable by RDKit or OpenEye, or having an unreasonable molecular weight ...
+
+Removed 0 structures with missing smiles.
+
+Removed 0 structures with invalid smiles.
+5jt2, 5jsm
+Removed 2 structures with ligands of unreasonable molecular weight.
+Number of kinases: 6
+Number of structures: 42
+Number of unique ligands: 37
+
+Removing structures with multiple instances of the same ligand bound to the same chain ...
+
+Removed 0 structures with multiple instances of the same ligand bound to the same chain.
+Number of kinases: 6
+Number of structures: 42
+Number of unique ligands: 37
+
+Getting kinases with at least 10 available structures per kinase and conformation ...
+
+Picking most populated kinases from diverse groups and conformations ...
+
+Applying group selection to filtered structures ...
+
+Adding information about covalent ligands ...
+Found 0 structures with covalent ligands.
+
+Saving benchmark data set ...
+
+Docking benchmark data set with mutations overview:
+Number of kinases: 1
+Number of kinase groups: 1
+Number of structures: 11
+Number of ligands: 11
+Number of conformations: 1
+Total number of docking runs to perform: 110
+
+species	name	klifs	group	dfg	ac	count
+Human	BRAF	509	TKL	out	in	11

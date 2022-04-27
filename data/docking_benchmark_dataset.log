@@ -1,0 +1,77 @@
+Getting all available structures ...
+Number of kinases: 340
+Number of structures: 12572
+Number of unique ligands: 3611
+
+Filtering for single orthosteric ligand ...
+Number of kinases: 311
+Number of structures: 10439
+Number of unique ligands: 3579
+
+Filtering for highest quality chain per PDB entry ...
+Number of kinases: 310
+Number of structures: 5017
+Number of unique ligands: 3579
+
+Removing structures with ligands not handled by OESpruce ...
+1bkx
+Number of kinases: 310
+Number of structures: 5016
+Number of unique ligands: 3578
+
+Removing structures with alterations in the KLIFS binding pocket ...
+Number of kinases: 191
+Number of structures: 1942
+Number of unique ligands: 1414
+
+Removing structures with SMILES not interpretable by RDKit or OpenEye, or having an unreasonable molecular weight ...
+5c01
+Removed 1 structures with missing smiles.
+2bzh, 3we8, 2bzj, 4as0, 2iwi, 2w1e, 2w1c
+Removed 7 structures with invalid smiles.
+5lvm, 6nja, 7bko, 6w7o, 4ypd, 3a7i, 4yo4, 5vgo, 7b44, 7oov, 3nuu, 2qlu, 3nuy, 2xiy, 2xiz, 2xix, 4kab, 7bkn, 3nus
+Removed 19 structures with ligands of unreasonable molecular weight.
+Number of kinases: 189
+Number of structures: 1915
+Number of unique ligands: 1392
+
+Removing structures with multiple instances of the same ligand bound to the same chain ...
+3gvu, 6szm, 3tku, 2buj, 3zos, 5s7n, 5s7g, 5s7m, 6x3p, 6in0, 4m14, 4m0y, 4w9w, 3cbl, 4cnh, 5f4n, 3cd3, 4e4l, 4m0z, 7jy4, 6tia, 4bic, 5hez, 4i41, 4oli, 3a2c, 5hu9
+Removed 27 structures with multiple instances of the same ligand bound to the same chain.
+Number of kinases: 188
+Number of structures: 1888
+Number of unique ligands: 1376
+
+Getting kinases with at least 10 available structures per kinase and conformation ...
+
+Picking most populated kinases from diverse groups and conformations ...
+
+Applying group selection to filtered structures ...
+
+Adding information about covalent ligands ...
+Found 11 structures with covalent ligands.
+6tfp, 5p9m, 6di5, 4yhf, 5p9j, 6di1, 6j6m, 5p9k, 5j87, 7n5y, 6n9p
+
+Saving benchmark data set ...
+
+Docking benchmark data set overview:
+Number of kinases: 10
+Number of kinase groups: 6
+Number of structures: 589
+Number of ligands: 423
+Number of conformations: 4
+Total number of docking runs to perform: 41102
+
+species	name	klifs	group	dfg	ac	count
+Human	PIM1	160	CAMK	in	in	129
+Human	AurA	259	Other	in	in	95
+Human	JAK2	436	TK	in	in	61
+Human	BTK	473	TK	in	out	56
+Mouse	PKACa	905	AGC	in	in	54
+Human	IRAK4	489	TKL	in	in	45
+Human	MAP2K1	383	STE	in	out	42
+Human	MST3	380	STE	in	in	29
+Human	AurA	259	Other	out-like	in	24
+Human	TRKA	480	TK	out	in	22
+Human	BRAF	509	TKL	in	out	21
+Human	BRAF	509	TKL	out	in	11

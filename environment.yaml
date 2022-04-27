@@ -52,6 +52,9 @@ dependencies:
   - rdkit
   - spyrmsd
   - kissim
+  
+  # visualization
+  - pymol-open-source
 
   - pip:
       # PyTorch trees
