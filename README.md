@@ -1,4 +1,4 @@
-# kinase-docking-benchmark
+# Kinase docking benchmark
 Benchmarking of cross-docking strategies for kinases.
 
 This repository contains Python scripts, Jupyter notebooks and analysis results. To access the generated and analyzed docking poses check out the associated [OSF project](https://osf.io/f6tgm/).
