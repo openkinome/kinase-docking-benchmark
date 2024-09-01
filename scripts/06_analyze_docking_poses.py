@@ -116,6 +116,28 @@ def get_fingerprint_similarity(smiles1, smiles2):
     return DataStructs.DiceSimilarity(fingerprint1, fingerprint2)
 
 
+def get_mcs_coverage(smiles1, smiles2)
+    """
+    Calculate the maximum common structure of two molecules and return the atom coverage of the 
+    first given molecule by the maximum common scaffold.
+    """
+    from rdkit import Chem
+    from rdkit.Chem import rdFMCS
+
+    rdkit_mol1 = Chem.MolFromSmiles(smiles1)
+    rdkit_mol2 = Chem.MolFromSmiles(smiles2)
+
+    mcs = rdFMCS.FindMCS(
+        (rdkit_mol1, rdkit_mol2), 
+        matchChiralTag=True, 
+        matchValences=True, 
+        ringMatchesRingOnly=True, 
+        timeout=60
+    )
+
+    return round(mcs.numAtoms / rdkit_mol1.GetNumHeavyAtoms(), 2)
+
+
 def get_shape_similarity(oemol, smiles):
     """
     Calculate the shape similarity between a molecule in 3D with known conformation and a molecule
@@ -248,6 +270,14 @@ if __name__ == "__main__":
             print(e)
             print(f"Could not calculate fingerprint similarity for {sdf_file.name}.")
             fingerprint_similarity = None
+        try:
+            mcs_coverage = get_mcs_coverage(
+                ligand_smiles, oechem.OEMolToSmiles(ligand_template_molecule)
+            )
+        except Exception as e:
+            print(e)
+            print(f"Could not calculate mcs coverage for {sdf_file.name}.")
+            mcs_coverage = None
         shape_similarity = get_shape_similarity(ligand_template_molecule, ligand_smiles)
         # get potential poses
         pose_files = sorted(list(directory.glob(sdf_file.stem[:-6] + "pose*")))
@@ -279,6 +309,7 @@ if __name__ == "__main__":
                 "posit_probability": posit_probability,
                 "fingerprint_similarity": fingerprint_similarity,
                 "shape_similarity": shape_similarity,
+                "mcs_coverage", mcs_coverage,
             }
             print(results)
             benchmark_results[sdf_file.name + f"_{k}"] = results
