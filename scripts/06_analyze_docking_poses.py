@@ -116,7 +116,7 @@ def get_fingerprint_similarity(smiles1, smiles2):
     return DataStructs.DiceSimilarity(fingerprint1, fingerprint2)
 
 
-def get_mcs_coverage(smiles1, smiles2)
+def get_mcs_coverage(smiles1, smiles2):
     """
     Calculate the maximum common structure of two molecules and return the atom coverage of the 
     first given molecule by the maximum common scaffold.
